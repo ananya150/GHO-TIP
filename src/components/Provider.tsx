@@ -5,6 +5,7 @@ import { ConnectKitProvider, getDefaultConfig } from "connectkit";
 import { arbitrumSepolia, sepolia } from 'viem/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { ETH_KEY, ARB_KEY, WALLET_CONNECT_ID } from '@/utils/chains';
+import theme from './theme.json'
 
 
 // const chains = [sepolia, arbitrumSepolia]
@@ -40,7 +41,8 @@ const Provider = ({
   }) => {
   return (
     <WagmiConfig config={config}>
-      <ConnectKitProvider debugMode>        
+      <ConnectKitProvider customTheme={theme}
+>        
         {children}
       </ConnectKitProvider>
     </WagmiConfig>

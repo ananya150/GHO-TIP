@@ -1,17 +1,10 @@
-"use client"
+import Header from "@/components/Header"
 import { ConnectKitButton } from "connectkit"
 
 export default function Home() {
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh',
-      }}
-    >
-      <ConnectKitButton />
+    <div className="h-screen w-screen bg-[#14141B]">
+      <Header />
     </div>
   )
 }
