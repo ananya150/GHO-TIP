@@ -1,9 +1,17 @@
-import Image from 'next/image'
+"use client"
+import { ConnectKitButton } from "connectkit"
 
 export default function Home() {
   return (
-    <div>
-      
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100vh',
+      }}
+    >
+      <ConnectKitButton />
     </div>
   )
 }
