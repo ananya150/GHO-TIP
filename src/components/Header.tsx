@@ -9,7 +9,7 @@ const Header = ({navbar}: {navbar: boolean}) => {
     <div className={`px-4 py-4 flex justify-between ${navbar ? 'items-center' : 'items-start'}`}>
           <Image src='/logo.png' alt='logo' width={166} height={166} />
           {navbar && <Navbar /> } 
-        <ConnectKitButton mode='dark'/>
+          <ConnectKitButton mode='dark'/>
     </div>
   )
 }
