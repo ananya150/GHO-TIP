@@ -41,7 +41,7 @@ const Provider = ({
   }) => {
   return (
     <WagmiConfig config={config}>
-      <ConnectKitProvider customTheme={theme}
+      <ConnectKitProvider mode='dark' customTheme={theme}
 >        
         {children}
       </ConnectKitProvider>

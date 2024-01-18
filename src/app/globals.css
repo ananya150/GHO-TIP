@@ -1,3 +1,4 @@
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,300,400&display=swap" rel="stylesheet');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -73,4 +74,8 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.font-sat {
+  font-family: 'Satoshi', sans-serif;
 }
