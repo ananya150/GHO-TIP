@@ -79,3 +79,7 @@
 .font-sat {
   font-family: 'Satoshi', sans-serif;
 }
+
+.tag {
+  background-image: linear-gradient(to bottom, #966dee, #8a64db, #7d5cc8, #7253b5, #664ba3);
+}

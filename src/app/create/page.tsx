@@ -1,4 +1,5 @@
 import Header from "@/components/Header"
+import Playground from "@/components/create/Playground"
 import { ConnectKitButton } from "connectkit"
 
 export default function Home() {
@@ -8,6 +9,9 @@ export default function Home() {
       <div className="h-full rounded-3xl bg-[#393148]  mx-8 mb-8 mt-2">
         <div className="py-3 px-12">
           <span className="text-[120px] text-[#DAD1EF] font-sat font-black ">Create</span>
+        </div>
+        <div className="">
+          <Playground />
         </div>
       </div>
     </div>
