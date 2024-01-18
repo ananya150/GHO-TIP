@@ -3,20 +3,49 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Tag from './Tag';
 
+
 const Playground = () => {
 
-    const [type, setType] = useState(0);
+    const [type, setType] = useState(2);
 
 
   return (
     <div className='flex justify-between w-full'>
         <div className='w-3/4 h-[480px] flex flex-col justify-center items-center '>
-            <div className='bg-[#251E33] flex flex-col justify-center items-center w-[480px] h-[280px] rounded-3xl relative'>
-                <div className='absolute -top-12 -left-16'>
-                    <Tag />
+            {
+                type === 0 &&
+                <div className='bg-[#251E33] flex flex-col justify-center items-center w-[450px] h-[320px] rounded-3xl relative'>
+                    <div className='absolute -top-12 -left-16'>
+                        <Tag />
+                    </div>
+                    <video src='/gho.mp4' autoPlay muted loop preload='auto' className='h-[230px]' />
                 </div>
-                <video src='/gho.mp4' autoPlay muted loop preload='auto' className='h-[230px]' />
-            </div>
+            }
+            {
+                type === 1 &&
+                <div className='bg-[#251E33] px-12 flex flex-col justify-center items-center w-[500px] h-[220px] rounded-t-[5rem] rounded-r-[5rem] relative'>
+                    <div className='absolute -top-12 -left-16'>
+                        <Tag />
+                    </div>
+                    <div>
+                        <span className='text-white text-[35px]'>Paying you back for last wkend! Thanks bro 🙏</span>
+                    </div>
+                </div>
+            }
+            {
+                type === 2 &&
+                <div className='bg-[#251E33] flex flex-col py-8 items-center w-[450px] h-[350px] justify-between rounded-3xl relative'>
+                    <div className='absolute -top-12 -left-16'>
+                        <Tag />
+                    </div>
+                    <div>
+                        <Image src='https://gho.xyz/dj-clip.gif' alt='gif' width={400} height={400} className='rounded-2xl' />
+                    </div>
+                    <div>
+                        <span className='text-white text-[28px]'>Amazing DJ set.. I'm a fan!!</span>
+                    </div>
+                </div>
+            }
         </div>
         <div className='w-1/4 flex flex-col'>
             <div className='ml-4'>

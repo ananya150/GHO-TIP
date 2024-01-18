@@ -83,3 +83,18 @@
 .tag {
   background-image: linear-gradient(to bottom, #966dee, #8a64db, #7d5cc8, #7253b5, #664ba3);
 }
+
+.spline-container {
+  position: relative;
+  width: 500px; 
+  padding-bottom: 56.25%; 
+  overflow: hidden;
+}
+
+.spline-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}

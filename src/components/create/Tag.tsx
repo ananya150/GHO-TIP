@@ -14,12 +14,7 @@ const Tag = () => {
             <span className='text-white text-[30px] font-sat font-bold mt-2'>.00</span>
         </div>
     </div>
-        // <div className="flex items-start text-white">
-        //     <span className=" relative font-tt text-[30px] leading-[30px] tracking-[-2px] md:text-[50px] md:leading-[51px] md:tracking-[-4px] lg:text-[62px] lg:leading-[62px] lg:tracking-[-4px] xl:text-[90px] xl:leading-[90px] xl:tracking-[-6px] ">20</span>
-        //     <span className=" font-tt text-[14px] font-bold leading-[16px] tracking-[-1px] md:text-[31px] md:leading-[35px] md:tracking-[-2px] lg:text-[28px] lg:leading-[32px] lg:tracking-[-2px] xl:text-[40px] xl:leading-[46px] xl:tracking-[-3px] ">.00</span>
-        //     </div>
-        // </div>  
-        )
+    )
 }
 
 export default Tag
