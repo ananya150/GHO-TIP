@@ -40,25 +40,6 @@ const Tag = ({amount, setAmount, balance}: any) => {
         }
         setDecimal(parts[1]);
         return;
-        // else if(num.length === 1){
-        //     setDecimal('00');
-        //     setInteger(num);
-        //     return;
-        // }else if(num.length === 2){
-        //     setDecimal('00');
-        //     setInteger(num);
-        //     return;
-        // }else if(num.length === 3){
-        //     setDecimal(`${num.charAt(2)}0`);
-        //     setInteger(num.substring(0,2));
-        //     return;
-        // }else if(num.length === 4){
-        //     setDecimal(num.substring(2,4));
-        //     setInteger(num.substring(0,2));
-        //     return;
-        // }else{
-        //     return;
-        // }
     }
 
     const handleInputChange = (event: any) => {

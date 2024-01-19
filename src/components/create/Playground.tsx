@@ -119,7 +119,7 @@ const Playground = () => {
 
     useEffect(() => {
         setConnected(isConnected);
-        clearStorage()
+        // clearStorage()
         if(isConnected){
             fetchBalance()
         }
@@ -145,6 +145,9 @@ const Playground = () => {
                 data = {
                     type: 0,
                     amount: amount,
+                    message: '',
+                    image: '',
+                    imageDescription: '',
                     link: hashLink,
                     toAddress: newAddress
                 }
@@ -153,6 +156,8 @@ const Playground = () => {
                     type: 1,
                     amount: amount,
                     message: message,
+                    image: '',
+                    imageDescription: '',
                     link: hashLink,
                     toAddress: newAddress
                 }
@@ -160,6 +165,7 @@ const Playground = () => {
                 data = {
                     type: 2,
                     amount: amount,
+                    message: '',
                     image: image,
                     imageDescription: imageDescription,
                     link: hashLink,

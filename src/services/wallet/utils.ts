@@ -81,14 +81,17 @@ export const sendGhoTransaction = async (address: string, amount: string) => {
 export const getLinksFromStorage = () => {
   const data = localStorage.getItem('links');
   if(data === null){
-    return {}
+    return {links: []}
   }
   return JSON.parse(data);
 }
 
 export const addLinkToStorage = (data: any) => {
   const prevData = getLinksFromStorage();
-  const newData = {...prevData, data}
+  console.log(prevData);
+  const newData = prevData
+  newData.links.push(data)
+  console.log(newData)
   localStorage.setItem('links', JSON.stringify(newData));
 }
 
