@@ -77,3 +77,21 @@ export const sendGhoTransaction = async (address: string, amount: string) => {
   const tx = await gho.populateTransaction.transfer(address, ethers.utils.parseEther(amount));
   return tx;
 }
+
+export const getLinksFromStorage = () => {
+  const data = localStorage.getItem('links');
+  if(data === null){
+    return {}
+  }
+  return JSON.parse(data);
+}
+
+export const addLinkToStorage = (data: any) => {
+  const prevData = getLinksFromStorage();
+  const newData = {...prevData, data}
+  localStorage.setItem('links', JSON.stringify(newData));
+}
+
+export const clearStorage = () => {
+  localStorage.removeItem('links');
+}

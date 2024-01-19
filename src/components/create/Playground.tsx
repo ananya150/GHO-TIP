@@ -14,13 +14,12 @@ import {
   } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { ReloadIcon } from "@radix-ui/react-icons"
-import { generateRandomKeyPair, getGhoBalance, sendGhoTransaction } from '@/services/wallet/utils';
+import { addLinkToStorage, clearStorage, generateRandomKeyPair, getGhoBalance, sendGhoTransaction } from '@/services/wallet/utils';
 import { ethers } from 'ethers';
 import toast from 'react-hot-toast'
 import { AlertCircle } from 'lucide-react';
 import { useSendTransaction, useWaitForTransaction } from 'wagmi' 
-
-
+import { useRouter } from 'next/navigation'
 
 const defaultMessage = 'Paying you back for last wkend! Thanks bro 🙏';
 const defaultDescription = "Amazing DJ set.. I'm a fan!!"
@@ -52,7 +51,10 @@ const Playground = () => {
     const [connected , setConnected] = useState(false);
     const [loading, setLoading] = useState(false)
     const [balance, setBalance] = useState('0.0');
-    const [toastId, setToastId] = useState<any>(null)
+    const [toastId, setToastId] = useState<any>(null);
+    const [newAddress, setNewAddress] = useState('');
+    const [hashLink, setHashLink] = useState('');
+    const router = useRouter();
 
     const [dropdownInput, setDropdownInput] = useState('');
 
@@ -96,34 +98,11 @@ const Playground = () => {
         }
         // generate hash and address for link
         const newPair = await generateRandomKeyPair()
-
+        setNewAddress(newPair.address)
+        setHashLink(newPair.hash);
         const tx = await sendGhoTransaction(newPair.address, amount);
         console.log(tx);
         sendTransaction(tx as any);
-
-        // send transaction to address
-        // let data;
-        // if(type === 0){
-        //     data = {
-        //         type: 0,
-        //         amount: amount
-        //     }
-        // }else if(type === 1){
-        //     data = {
-        //         type: 1,
-        //         amount: amount,
-        //         message: message
-        //     }
-        // }else if(type === 2){
-        //     data = {
-        //         type: 2,
-        //         amount: amount,
-        //         image: image,
-        //         imageDescription: imageDescription
-        //     }
-        // }
-
-        // console.log(data)
     }
 
     const handleConnectWallet = () => {
@@ -140,6 +119,7 @@ const Playground = () => {
 
     useEffect(() => {
         setConnected(isConnected);
+        clearStorage()
         if(isConnected){
             fetchBalance()
         }
@@ -159,7 +139,36 @@ const Playground = () => {
         if(status === "success"){
             toast.dismiss(toastId);
             toast.success("Transaction Confirmed");
-            setLoading(false)
+
+            let data;
+            if(type === 0){
+                data = {
+                    type: 0,
+                    amount: amount,
+                    link: hashLink,
+                    toAddress: newAddress
+                }
+            }else if(type === 1){
+                data = {
+                    type: 1,
+                    amount: amount,
+                    message: message,
+                    link: hashLink,
+                    toAddress: newAddress
+                }
+            }else if(type === 2){
+                data = {
+                    type: 2,
+                    amount: amount,
+                    image: image,
+                    imageDescription: imageDescription,
+                    link: hashLink,
+                    toAddress: newAddress
+                }
+            }
+            addLinkToStorage(data);
+            setLoading(false);
+            router.push(`/create/${newAddress}`)
             return;
         }
         if(status === "error"){
@@ -170,21 +179,6 @@ const Playground = () => {
         }
 
     }, [status, isError])
-
-    // useEffect(() => {
-    //     if(isSuccess){
-    //         // route to new page
-    //         console.log("Tx confirmed");
-    //         setLoading(false)
-    //         return;
-    //     }
-    //     if(isError){
-    //         // show error toast
-    //         console.log("Tx error");
-    //         setLoading(false)
-    //         return;
-    //     }
-    // }, [isSuccess, isError])
 
     const invalidAmountToast = () => {
         toast.custom((t) => (
