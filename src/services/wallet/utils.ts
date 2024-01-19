@@ -3,6 +3,7 @@ import {entropyToMnemonic, mnemonicToSeedSync} from 'bip39';
 import {hdkey} from 'ethereumjs-wallet';
 import {encode, decode} from 'bs58';
 import { gho } from './constants';
+import { ethers } from 'ethers';
 
 const DEFAULT_LINK_KEYLENGTH = 20;
 
@@ -70,4 +71,9 @@ export const getKeyPairFromHash = async (hash:string) => {
     const buff = decode(hash)
     const {address, privateKey} = await ethKeyPair(buff);
     return {address, privateKey};
+}
+
+export const sendGhoTransaction = async (address: string, amount: string) => {
+  const tx = await gho.populateTransaction.transfer(address, ethers.utils.parseEther(amount));
+  return tx;
 }

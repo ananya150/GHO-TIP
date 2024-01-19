@@ -14,8 +14,12 @@ import {
   } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { ReloadIcon } from "@radix-ui/react-icons"
-import { getGhoBalance } from '@/services/wallet/utils';
+import { generateRandomKeyPair, getGhoBalance, sendGhoTransaction } from '@/services/wallet/utils';
 import { ethers } from 'ethers';
+import toast from 'react-hot-toast'
+import { AlertCircle } from 'lucide-react';
+import { useSendTransaction, useWaitForTransaction } from 'wagmi' 
+
 
 
 const defaultMessage = 'Paying you back for last wkend! Thanks bro 🙏';
@@ -32,6 +36,14 @@ const Playground = () => {
     const {isConnected, address} = useAccount()
     const textAreaRef = useRef(null);
     const inputRef = useRef(null);
+    const {  data , sendTransaction, isError } = useSendTransaction() 
+    const {
+        data: txReceipt,
+        error: txError,
+        isLoading: txLoading,
+        isSuccess,
+        status
+      } = useWaitForTransaction({ confirmations: 1, hash: data?.hash });
 
     const [amount, setAmount] = useState('');
     const [message, setMessage] = useState(defaultMessage)
@@ -40,6 +52,7 @@ const Playground = () => {
     const [connected , setConnected] = useState(false);
     const [loading, setLoading] = useState(false)
     const [balance, setBalance] = useState('0.0');
+    const [toastId, setToastId] = useState<any>(null)
 
     const [dropdownInput, setDropdownInput] = useState('');
 
@@ -72,29 +85,45 @@ const Playground = () => {
         setType(tabIndex);
     }
 
-    const handleButtonClick = () => {
+    const handleButtonClick = async () => {
+
         setLoading(true);
-        let data;
-        if(type === 0){
-            data = {
-                type: 0,
-                amount: amount
-            }
-        }else if(type === 1){
-            data = {
-                type: 1,
-                amount: amount,
-                message: message
-            }
-        }else if(type === 2){
-            data = {
-                type: 2,
-                amount: amount,
-                image: image,
-                imageDescription: imageDescription
-            }
+
+        if(parseFloat(amount) > parseFloat(balance)){
+            invalidAmountToast()
+            setLoading(false)             
+            return;
         }
-        console.log(data)
+        // generate hash and address for link
+        const newPair = await generateRandomKeyPair()
+
+        const tx = await sendGhoTransaction(newPair.address, amount);
+        console.log(tx);
+        sendTransaction(tx as any);
+
+        // send transaction to address
+        // let data;
+        // if(type === 0){
+        //     data = {
+        //         type: 0,
+        //         amount: amount
+        //     }
+        // }else if(type === 1){
+        //     data = {
+        //         type: 1,
+        //         amount: amount,
+        //         message: message
+        //     }
+        // }else if(type === 2){
+        //     data = {
+        //         type: 2,
+        //         amount: amount,
+        //         image: image,
+        //         imageDescription: imageDescription
+        //     }
+        // }
+
+        // console.log(data)
     }
 
     const handleConnectWallet = () => {
@@ -115,6 +144,81 @@ const Playground = () => {
             fetchBalance()
         }
     }, [image, isConnected, address])
+
+    useEffect(() => {
+        if(isError){
+            toast.error("Transaction Rejected");
+            setLoading(false)
+            return;
+        }
+        if(status === "loading"){
+            const tId = toast.loading('Waiting for transaction');
+            setToastId(tId);
+            return;
+        }
+        if(status === "success"){
+            toast.dismiss(toastId);
+            toast.success("Transaction Confirmed");
+            setLoading(false)
+            return;
+        }
+        if(status === "error"){
+            toast.dismiss(toastId);
+            toast.error("Transaction Failed");
+            setLoading(false)
+            return;
+        }
+
+    }, [status, isError])
+
+    // useEffect(() => {
+    //     if(isSuccess){
+    //         // route to new page
+    //         console.log("Tx confirmed");
+    //         setLoading(false)
+    //         return;
+    //     }
+    //     if(isError){
+    //         // show error toast
+    //         console.log("Tx error");
+    //         setLoading(false)
+    //         return;
+    //     }
+    // }, [isSuccess, isError])
+
+    const invalidAmountToast = () => {
+        toast.custom((t) => (
+            <div
+              className={`${
+                t.visible ? 'animate-enter' : 'animate-leave'
+              } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+            >
+              <div className="flex-1 w-0 p-4">
+                <div className="flex items-start">
+                  <div className="flex-shrink-0 pt-0.5">
+                    <AlertCircle className='text-yellow-700' />
+                  </div>
+                  <div className="ml-3 flex-1">
+                    <p className="text-sm font-medium text-gray-900">
+                      Invalid Amount
+                    </p>
+                    <p className="mt-1 text-sm text-gray-500">
+                      Max {balance}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="flex border-l border-gray-200">
+                <button
+                  onClick={() => toast.dismiss(t.id)}
+                  className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+                  Dismiss
+                </button>
+              </div>
+            </div>
+          )) 
+    }
 
   return (
     <div className='flex justify-between w-full'>
