@@ -13,16 +13,20 @@ import {
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
+import { ReloadIcon } from "@radix-ui/react-icons"
+
 
 const defaultMessage = 'Paying you back for last wkend! Thanks bro 🙏';
 const defaultDescription = "Amazing DJ set.. I'm a fan!!"
-const defaultImage = 'https://gho.xyz/dj-clip.gif';
+const defaultImage = '/dj.gif';
 
 
 const Playground = () => {
 
     const [type, setType] = useState(0);
-    const {setOpen} = useModal();
+    const {setOpen} = useModal({onConnect: (address) => {
+        console.log(`Address is ${address.address}`)
+    }});
     const {isConnected} = useAccount()
     const textAreaRef = useRef(null);
     const inputRef = useRef(null);
@@ -31,6 +35,9 @@ const Playground = () => {
     const [message, setMessage] = useState(defaultMessage)
     const [image, setImage] = useState(defaultImage);
     const [imageDescription, setImageDescription] = useState(defaultDescription);
+    const [connected , setConnected] = useState(false);
+    const [loading, setLoading] = useState(false)
+    const [balance, setBalance] = useState(0);
 
     const [dropdownInput, setDropdownInput] = useState('');
 
@@ -63,15 +70,49 @@ const Playground = () => {
         setType(tabIndex);
     }
 
-    useEffect(() => {}, [image])
+    const handleButtonClick = () => {
+        setLoading(true);
+        let data;
+        if(type === 0){
+            data = {
+                type: 0,
+                amount: amount
+            }
+        }else if(type === 1){
+            data = {
+                type: 1,
+                amount: amount,
+                message: message
+            }
+        }else if(type === 2){
+            data = {
+                type: 2,
+                amount: amount,
+                image: image,
+                imageDescription: imageDescription
+            }
+        }
+        console.log(data)
+    }
+
+    const handleConnectWallet = () => {
+        if(!isConnected){
+            setOpen(true);
+            return;
+        }
+    }
+
+    useEffect(() => {
+        setConnected(isConnected);
+        if(isConnected){
+            
+        }
+    }, [image, isConnected])
 
   return (
     <div className='flex justify-between w-full'>
         <div className='w-2/5 ml-16 mt-8'>
             <div className='flex flex-col'>
-                {/* <div className='ml-4'>
-                    <span className='text-[#DAD1EF] font-sat text-[20px]'>Type</span>
-                </div> */}
                 <div className='bg-[#A8A1BA] rounded-3xl mt-28 ml-2 py-2 px-4 flex w-fit items-center'>
                     <div onClick={() => {handleChangeTab(0)}} className={`${type === 0 ? 'text-[#DAD1EF] bg-[#14141B] cursor-pointer font-medium font-sat tracking-tight text-[24px] py-1 px-4 rounded-3xl': 'text-[#14141B] cursor-pointer font-medium font-sat tracking-tight text-[24px] py-1 px-4'} `}>
                         Default
@@ -142,9 +183,26 @@ const Playground = () => {
                     </div>
                 </div>
             }
-            <div>
-                <Button className='text-[24px] w-[350px] bg-[#14141B] hover:bg-[#130f1a] hover:text-white text-[#EBE3FA] py-8 rounded-[3rem] '>Create Link</Button>
-            </div>
+            {
+                connected ?
+                (
+                    loading ?
+                    <div>
+                        <Button disabled onClick={handleButtonClick} className='text-[24px] cursor-not-allowed w-[350px] bg-[#14141B] hover:bg-[#130f1a] hover:text-white text-[#EBE3FA] py-8 rounded-[3rem] flex '>
+                            <ReloadIcon className="h-4 w-4 animate-spin mr-6" />
+                            Please wait
+                        </Button>
+                    </div>
+                    :
+                    <div>
+                        <Button onClick={handleButtonClick} className='text-[24px] w-[350px] bg-[#14141B] hover:bg-[#130f1a] hover:text-white text-[#EBE3FA] py-8 rounded-[3rem] '>Create Link</Button>
+                    </div>
+                )
+                :
+                <div>
+                    <Button onClick={handleConnectWallet} className='text-[24px] w-[350px] bg-[#14141B] hover:bg-[#130f1a] hover:text-white text-[#EBE3FA] py-8 rounded-[3rem] '>Connect Wallet</Button>
+                </div>
+            }
         </div>
     </div>
   )
