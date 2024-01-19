@@ -1,9 +1,15 @@
-import _sodium from 'libsodium-wrappers-sumo';
+import _sodium, { add } from 'libsodium-wrappers-sumo';
 import {entropyToMnemonic, mnemonicToSeedSync} from 'bip39';
 import {hdkey} from 'ethereumjs-wallet';
 import {encode, decode} from 'bs58';
+import { gho } from './constants';
 
 const DEFAULT_LINK_KEYLENGTH = 20;
+
+export const getGhoBalance = async (address: string) => {
+  const balance = await await gho.balanceOf(address);
+  return balance;
+}
 
 const getSodium = async () => {
     await _sodium.ready;

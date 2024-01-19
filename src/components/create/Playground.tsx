@@ -14,6 +14,8 @@ import {
   } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { ReloadIcon } from "@radix-ui/react-icons"
+import { getGhoBalance } from '@/services/wallet/utils';
+import { ethers } from 'ethers';
 
 
 const defaultMessage = 'Paying you back for last wkend! Thanks bro 🙏';
@@ -24,10 +26,10 @@ const defaultImage = '/dj.gif';
 const Playground = () => {
 
     const [type, setType] = useState(0);
-    const {setOpen} = useModal({onConnect: (address) => {
-        console.log(`Address is ${address.address}`)
+    const {setOpen} = useModal({onDisconnect: () => {
+        setBalance('0.0');
     }});
-    const {isConnected} = useAccount()
+    const {isConnected, address} = useAccount()
     const textAreaRef = useRef(null);
     const inputRef = useRef(null);
 
@@ -37,7 +39,7 @@ const Playground = () => {
     const [imageDescription, setImageDescription] = useState(defaultDescription);
     const [connected , setConnected] = useState(false);
     const [loading, setLoading] = useState(false)
-    const [balance, setBalance] = useState(0);
+    const [balance, setBalance] = useState('0.0');
 
     const [dropdownInput, setDropdownInput] = useState('');
 
@@ -102,12 +104,17 @@ const Playground = () => {
         }
     }
 
+    const fetchBalance = async () => {
+        const balance = await getGhoBalance(address!);
+        setBalance(parseFloat(ethers.utils.formatEther(balance)).toFixed(2))
+    }
+
     useEffect(() => {
         setConnected(isConnected);
         if(isConnected){
-            
+            fetchBalance()
         }
-    }, [image, isConnected])
+    }, [image, isConnected, address])
 
   return (
     <div className='flex justify-between w-full'>
@@ -139,7 +146,7 @@ const Playground = () => {
                 type === 0 &&
                 <div className='bg-[#251E33] flex flex-col justify-center items-center w-[450px] h-[320px] rounded-3xl relative'>
                     <div className='absolute -top-12 -left-16'>
-                        <Tag amount={amount} setAmount={setAmount} />
+                        <Tag balance={balance} amount={amount} setAmount={setAmount} />
                     </div>
                     <video src='/gho.mp4' autoPlay muted loop preload='auto' className='h-[230px]' />
                 </div>
@@ -148,7 +155,7 @@ const Playground = () => {
                 type === 1 &&
                 <div className='bg-[#251E33] cursor-pointer px-12 flex flex-col justify-center items-center w-[500px] h-[220px] rounded-t-[5rem] rounded-r-[5rem] relative'>
                     <div className='absolute -top-12 -left-16'>
-                        <Tag amount={amount} setAmount={setAmount} />
+                        <Tag balance={balance} amount={amount} setAmount={setAmount} />
                     </div>
                     <div onClick={handleMessageTextArea} >
                         <textarea ref={textAreaRef} style={{resize: 'none'}} value={message} onChange={(e) => {setMessage(e.target.value)}} className='text-white text-[35px] outline-none border-none bg-[#251E33]'></textarea>
@@ -159,7 +166,7 @@ const Playground = () => {
                 type === 2 &&
                 <div className='bg-[#251E33] cursor-pointer flex flex-col py-8 items-center w-[450px] h-[350px] justify-between rounded-3xl relative'>
                     <div className='absolute -top-12 -left-16 z-10'>
-                        <Tag amount={amount} setAmount={setAmount} />
+                        <Tag balance={balance} amount={amount} setAmount={setAmount} />
                     </div>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
