@@ -1,7 +1,6 @@
 import Header from "@/components/Header"
-import Playground from "@/components/create/Playground"
 
-export default function ClaimPage() {
+export default function ClaimPage({ params }: { params: { slug: string } }) {
   return (
     <div className="h-screen flex flex-col w-screen bg-[#14141B]">
       <Header navbar={false} />
@@ -10,7 +9,7 @@ export default function ClaimPage() {
           <span className="text-[120px] text-[#DAD1EF] font-sat font-black ">Claim</span>
         </div>
         <div className="">
-          {/* <Playground /> */}
+          
         </div>
       </div>
     </div>
