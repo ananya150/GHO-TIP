@@ -1,7 +1,7 @@
 import Header from "@/components/Header"
 import Share from "@/components/create/Share"
 
-export default function Home({ params }: { params: { slug: string } }) {
+export default function SharePage({ params }: { params: { slug: string } }) {
   return (
     <div className="h-screen flex flex-col w-screen bg-[#14141B]">
       <Header navbar={false} />

@@ -20,6 +20,7 @@ import toast from 'react-hot-toast'
 import { AlertCircle } from 'lucide-react';
 import { useSendTransaction, useWaitForTransaction } from 'wagmi' 
 import { useRouter } from 'next/navigation'
+import { db } from '@/utils/db';
 
 const defaultMessage = 'Paying you back for last wkend! Thanks bro 🙏';
 const defaultDescription = "Amazing DJ set.. I'm a fan!!"
@@ -137,45 +138,7 @@ const Playground = () => {
             return;
         }
         if(status === "success"){
-            toast.dismiss(toastId);
-            toast.success("Transaction Confirmed");
-
-            let data;
-            if(type === 0){
-                data = {
-                    type: 0,
-                    amount: amount,
-                    message: '',
-                    image: '',
-                    imageDescription: '',
-                    link: hashLink,
-                    toAddress: newAddress
-                }
-            }else if(type === 1){
-                data = {
-                    type: 1,
-                    amount: amount,
-                    message: message,
-                    image: '',
-                    imageDescription: '',
-                    link: hashLink,
-                    toAddress: newAddress
-                }
-            }else if(type === 2){
-                data = {
-                    type: 2,
-                    amount: amount,
-                    message: '',
-                    image: image,
-                    imageDescription: imageDescription,
-                    link: hashLink,
-                    toAddress: newAddress
-                }
-            }
-            addLinkToStorage(data);
-            setLoading(false);
-            router.push(`/create/${newAddress}`)
-            return;
+            handleTransactionConfirmation()
         }
         if(status === "error"){
             toast.dismiss(toastId);
@@ -185,6 +148,55 @@ const Playground = () => {
         }
 
     }, [status, isError])
+
+    const handleTransactionConfirmation = async () => {
+        toast.dismiss(toastId);
+        toast.success("Transaction Confirmed");
+
+        let data;
+        if(type === 0){
+            data = {
+                type: 0,
+                amount: amount,
+                message: '',
+                image: '',
+                imageDescription: '',
+                link: hashLink,
+                toAddress: newAddress
+            }
+        }else if(type === 1){
+            data = {
+                type: 1,
+                amount: amount,
+                message: message,
+                image: '',
+                imageDescription: '',
+                link: hashLink,
+                toAddress: newAddress
+            }
+        }else if(type === 2){
+            data = {
+                type: 2,
+                amount: amount,
+                message: '',
+                image: image,
+                imageDescription: imageDescription,
+                link: hashLink,
+                toAddress: newAddress
+            }
+        }
+        addLinkToStorage(data);
+        setLoading(false);
+        //@ts-ignore
+        delete data?.link
+        try{
+            await db.set(newAddress, data);
+        }catch(e){
+            console.log("Error occured while saving");
+        }
+        router.push(`/create/${newAddress}`)
+        return;
+    }
 
     const invalidAmountToast = () => {
         toast.custom((t) => (
