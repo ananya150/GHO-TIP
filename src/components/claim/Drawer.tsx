@@ -72,7 +72,7 @@ export function ClaimDrawer({
             return;
         }
         console.log(enteredAddress);
-        const promise = accountService.transferGho(address).then((txHash: any) => {
+        const promise = accountService.transferGho(enteredAddress).then((txHash: any) => {
             setTxHash(txHash)
             setClaimed(true);
             console.log("tx completed with hash", txHash);

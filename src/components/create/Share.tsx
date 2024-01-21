@@ -13,7 +13,7 @@ const Share = ({address}: any) => {
   console.log(data)
 
   const copy = () => {
-    navigator.clipboard.writeText(`http://localhost:3000/claim/${data.link}`);
+    navigator.clipboard.writeText(`https://gho-tip-three.vercel.app/claim/${data.link}`);
     toast.success('Copied')
   }
 
