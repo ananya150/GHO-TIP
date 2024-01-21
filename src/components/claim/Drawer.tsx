@@ -67,6 +67,10 @@ export function ClaimDrawer({
         if(selectedChain === 0){
             return;
         }
+        if(selectedChain === 2){
+            toast.error("Not enough liquidity in arbitrum right now. Try Ethereum sepolia for now.");
+            return;
+        }
         console.log(enteredAddress);
         const promise = accountService.transferGho(address).then((txHash: any) => {
             setTxHash(txHash)
@@ -197,13 +201,23 @@ export function ClaimDrawer({
                         </div>
                     <Separator className="mt-5 bg-gray-100" />
                     <div className="mt-6 flex flex-col space-y-4">
-                        <div onClick={() => {setSelectedChain(1)}} className={`w-full ${selectedChain === 1 ? 'border border-[#4eaffe]': 'border border-[#F7F8F9]'} bg-[#F7F8F9] cursor-pointer text-black text-[17px] font-sat font-medium rounded-2xl py-3 hover:bg-[#F7F8F9] flex justify-start items-center px-3 `}>
-                            <Wallet className="text-black w-5 h-5 mr-4" />
-                            Ethereum Sepolia
+                        <div onClick={() => {setSelectedChain(1)}} className={`w-full ${selectedChain === 1 ? 'border border-[#4eaffe]': 'border border-[#F7F8F9]'} bg-[#F7F8F9] cursor-pointer text-black text-[17px] font-sat font-medium rounded-2xl py-3 hover:bg-[#F7F8F9] flex justify-between items-center px-3 `}>
+                            <div className="flex items-center">
+                                <Wallet className="text-black w-5 h-5 mr-4" />
+                                Ethereum Sepolia
+                            </div>
+                            <div className="text-[12px] text-[#4eaffe]">
+                                ~ 30 sec
+                            </div>
                         </div>
-                        <div onClick={() => {setSelectedChain(2)}} className={`w-full ${selectedChain === 2 ? 'border border-[#4eaffe]': 'border border-[#F7F8F9]'} bg-[#F7F8F9] cursor-pointer text-black text-[17px] font-sat font-medium rounded-2xl py-3 hover:bg-[#F7F8F9] flex justify-start items-center px-3 `}>
-                            <BookUser className="text-black w-5 h-5 mr-4" />
-                            Arbitrum Sepolia
+                        <div onClick={() => {setSelectedChain(2)}} className={`w-full ${selectedChain === 2 ? 'border border-[#4eaffe]': 'border border-[#F7F8F9]'} bg-[#F7F8F9] cursor-pointer text-black text-[17px] font-sat font-medium rounded-2xl py-3 hover:bg-[#F7F8F9] flex justify-between items-center px-3 `}>
+                            <div className="flex items-center">
+                                <BookUser className="text-black w-5 h-5 mr-4" />
+                                Arbitrum Sepolia
+                            </div>
+                            <div className="text-[12px] text-[#4eaffe]">
+                                ~ 20 min
+                            </div>
                         </div>
                     </div>
                     <div className="flex justify-between space-x-2 mt-8">
