@@ -6,7 +6,7 @@ import { Button } from '../ui/button';
 import { ClaimDrawer } from './Drawer';
 import Link from 'next/link';
 
-const Claim = ({data, hash}: any) => {
+const Claimed = ({data, hash}: any) => {
 
     const [claimed, setClaimed] = useState(false);
     const [txHash, setTxHash] = useState('')
@@ -48,31 +48,18 @@ const Claim = ({data, hash}: any) => {
                         </div>
                     </div>
                 }
-                {
-                    claimed ? 
-                        <div className='flex flex-col justify-between items-center'>
-                            <div className='text-[25px] mt-4 font-sat text-white'>
-                                Claimed! 🎊
-                            </div>
-                            <div className='text-[20px] mt-4 font-sat text-white'>
-                                Your GHO tokens should arrive in a moment. Check <Link href={`https://sepolia.etherscan.io/tx/${txHash}`} target='_blank'><u>here</u></Link>
-                            </div>
+                    <div className='flex flex-col justify-between items-center'>
+                        <div className='text-[25px] mt-4 font-sat text-white'>
+                            This GHO-tip is already claimed!
                         </div>
-                        :
-                        <div>
-                            <ClaimDrawer data={data} hash={hash} setClaimed={setClaimed} setTxHash={setTxHash}>
-                                <Button className='text-[24px] w-[350px] bg-[#14141B] hover:bg-[#130f1a] hover:text-white text-[#EBE3FA] py-8 rounded-[3rem] '>Claim</Button>
-                            </ClaimDrawer>
-                        </div>
-
-                }
+                    </div>
             </div>
 
     </div>
   )
 }
 
-export default Claim
+export default Claimed
 
 const Tag = ({amount}: any) => {
 

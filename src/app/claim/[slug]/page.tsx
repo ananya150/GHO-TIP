@@ -2,12 +2,13 @@ import Header from "@/components/Header"
 import { AccountService } from "@/services/wallet/service";
 import { db } from "@/utils/db";
 import Claim from "@/components/claim/Claim";
+import Claimed from "@/components/claim/Claimed";
 
 export default async function ClaimPage({ params }: { params: { slug: string } }) {
 
   const hashLink = params.slug;
   const account = await AccountService.init(hashLink);
-  const data = await db.get(account.address);
+  const data: any = await db.get(account.address);
   console.log(data);
 
 
@@ -19,7 +20,12 @@ export default async function ClaimPage({ params }: { params: { slug: string } }
           <span className="text-[120px] text-[#DAD1EF] font-sat font-black ">Claim</span>
         </div>
         <div className="">
-          <Claim data={data} />
+          {
+              data.isClaimed? 
+              <Claimed data={data} hash={hashLink} />
+                :
+              <Claim data={data} hash={hashLink} />
+          }
         </div>
       </div>
     </div>

@@ -162,7 +162,8 @@ const Playground = () => {
                 image: '',
                 imageDescription: '',
                 link: hashLink,
-                toAddress: newAddress
+                toAddress: newAddress,
+                isClaimed: false
             }
         }else if(type === 1){
             data = {
@@ -172,7 +173,8 @@ const Playground = () => {
                 image: '',
                 imageDescription: '',
                 link: hashLink,
-                toAddress: newAddress
+                toAddress: newAddress,
+                isClaimed: false
             }
         }else if(type === 2){
             data = {
@@ -182,7 +184,8 @@ const Playground = () => {
                 image: image,
                 imageDescription: imageDescription,
                 link: hashLink,
-                toAddress: newAddress
+                toAddress: newAddress,
+                isClaimed: false
             }
         }
         addLinkToStorage(data);
