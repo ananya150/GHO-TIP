@@ -58,15 +58,15 @@ const Share = ({address}: any) => {
               <div className='flex space-x-4 items-center'>
                 <div className='bg-[#A8A1BA] rounded-3xl py-2 px-4 flex w-fit items-center'>
                     <div className={'text-[#14141B] cursor-pointer font-medium font-sat tracking-tight text-[18px] py-1 px-4'}>
-                      http://localhost:3000/claim/{data.link}
+                    https://gho-tip-three.vercel.app/claim/{data.link}
                     </div>
                 </div>
                 <div onClick={copy}  className='bg-[#A8A1BA] rounded-xl p-2 w-fit cursor-pointer'>
                   <Copy className='text-[#14141B] h-6 w-6' />
                 </div>
-                <div className='bg-[#A8A1BA] rounded-xl p-2 w-fit cursor-pointer'>
+                {/* <div className='bg-[#A8A1BA] rounded-xl p-2 w-fit cursor-pointer'>
                   <ShareIcon className='text-[#14141B] h-6 w-6' />
-                </div>
+                </div> */}
               </div>
             }
         </div>
