@@ -1,6 +1,16 @@
 import Header from "@/components/Header"
+import { AccountService } from "@/services/wallet/service";
+import { db } from "@/utils/db";
+import Claim from "@/components/claim/Claim";
 
-export default function ClaimPage({ params }: { params: { slug: string } }) {
+export default async function ClaimPage({ params }: { params: { slug: string } }) {
+
+  const hashLink = params.slug;
+  const account = await AccountService.init(hashLink);
+  const data = await db.get(account.address);
+  console.log(data);
+
+
   return (
     <div className="h-screen flex flex-col w-screen bg-[#14141B]">
       <Header navbar={false} />
@@ -9,7 +19,7 @@ export default function ClaimPage({ params }: { params: { slug: string } }) {
           <span className="text-[120px] text-[#DAD1EF] font-sat font-black ">Claim</span>
         </div>
         <div className="">
-          
+          <Claim data={data} />
         </div>
       </div>
     </div>
