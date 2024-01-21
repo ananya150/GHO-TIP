@@ -10,7 +10,6 @@ const Share = ({address}: any) => {
 
   const linksData = getLinksFromStorage();
   const data = linksData.links[linksData.links.length - 1]
-  console.log(data)
 
   const copy = () => {
     navigator.clipboard.writeText(`https://gho-tip-three.vercel.app/claim/${data.link}`);
@@ -82,7 +81,6 @@ const Tag = ({amount}: any) => {
   const [decimal, setDecimal] = useState('');
 
   const getDigits = (num: string) => {
-      console.log(num)
       if(num.length === 0){
           setInteger('00');
           setDecimal('00');

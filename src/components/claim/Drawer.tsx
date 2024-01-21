@@ -71,7 +71,6 @@ export function ClaimDrawer({
             toast.error("Not enough liquidity in arbitrum right now. Try Ethereum sepolia for now.");
             return;
         }
-        console.log(enteredAddress);
         const promise = accountService.transferGho(enteredAddress).then((txHash: any) => {
             setTxHash(txHash)
             setClaimed(true);

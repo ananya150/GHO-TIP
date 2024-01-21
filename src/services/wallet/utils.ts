@@ -88,10 +88,8 @@ export const getLinksFromStorage = () => {
 
 export const addLinkToStorage = (data: any) => {
   const prevData = getLinksFromStorage();
-  console.log(prevData);
   const newData = prevData
   newData.links.push(data)
-  console.log(newData)
   localStorage.setItem('links', JSON.stringify(newData));
 }
 

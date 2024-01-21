@@ -102,7 +102,6 @@ const Playground = () => {
         setNewAddress(newPair.address)
         setHashLink(newPair.hash);
         const tx = await sendGhoTransaction(newPair.address, amount);
-        console.log(tx);
         sendTransaction(tx as any);
     }
 

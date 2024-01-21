@@ -9,7 +9,6 @@ export default async function ClaimPage({ params }: { params: { slug: string } }
   const hashLink = params.slug;
   const account = await AccountService.init(hashLink);
   const data: any = await db.get(account.address);
-  console.log(data);
 
 
   return (

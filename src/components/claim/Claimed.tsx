@@ -67,7 +67,6 @@ const Tag = ({amount}: any) => {
   const [decimal, setDecimal] = useState('');
 
   const getDigits = (num: string) => {
-      console.log(num)
       if(num.length === 0){
           setInteger('00');
           setDecimal('00');

@@ -10,7 +10,6 @@ const Tag = ({amount, setAmount, balance}: any) => {
     const inputRef2 = useRef(null);
 
     const getDigits = (num: string) => {
-        console.log(num)
         if(num.length === 0){
             setInteger('00');
             setDecimal('00');
@@ -47,7 +46,6 @@ const Tag = ({amount, setAmount, balance}: any) => {
 
         if (/^[0-9]*\.?[0-9]{0,2}$/.test(value) || value === "") {
             setAmount(value);
-            console.log("Value is ", value )
         } else if (event.target.value === '') {
         setAmount('');
         }
@@ -56,7 +54,6 @@ const Tag = ({amount, setAmount, balance}: any) => {
 
     const activeInput = () => {
         let parts = amount.split('.');
-        console.log(parts.length)
         if(parts.length === 1){
 
             //@ts-ignore
